@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root{
+  --primary-color: #60C86D;
+  --second-color: #1E1E1E;
+}
+  .nav-link{
+  color: var(--primary-color)!important;
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  background-color: var(--second-color)!important;
+}
+

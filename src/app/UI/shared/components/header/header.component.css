@@ -1,0 +1,8 @@
+.disabled.nav-link{
+  opacity: 0.5;
+}
+.logoCont{
+  width: 200px;
+  background-position: center;
+  display: block;
+}
