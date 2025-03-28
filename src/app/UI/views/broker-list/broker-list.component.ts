@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Broker } from '../../../../domain/models/Broker/broker';
-import { BrokerGateway } from '../../../../domain/models/Broker/gateway/broker-gateway';
+import { Broker } from '../../../domain/models/Broker/broker';
+import { BrokerGateway } from '../../../domain/models/Broker/gateway/broker-gateway';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-broker-list',
@@ -13,7 +14,12 @@ import { BrokerGateway } from '../../../../domain/models/Broker/gateway/broker-g
 export class BrokerListComponent {
   brokers: Broker[] = [];
 
-  constructor(private brokerGateway: BrokerGateway) {}
+  constructor(private brokerGateway: BrokerGateway, private router: Router) {}
+
+  goToBrokerDetail(broker: any) {
+    this.router.navigate(['/brokers', broker.localShortName]); // Navega al detalle
+  }
+
   ngOnInit(): void {
     this.brokerGateway.getAllBrokers().subscribe(brokers => {
       this.brokers = brokers.map(broker => {

@@ -1,0 +1,42 @@
+<div class="comment-box">
+  <h3>Comentarios</h3>
+
+  <!-- Lista de comentarios -->
+  <ul class="comment-list">
+    <li *ngFor="let comment of paginatedComments">
+      <p><strong>{{ comment.userId }}</strong></p>
+      <p>{{ comment.content }}</p>
+      <div class="star-rating">
+        <span *ngFor="let star of [1, 2, 3, 4, 5]"
+              [class.filled]="star <= comment.rating">★</span>
+      </div>
+    </li>
+  </ul>
+
+  <!-- Controles de paginación -->
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 0">← Anterior</button>
+    <span>Página {{ currentPage + 1 }}</span>
+    <button (click)="nextPage()" [disabled]="(currentPage + 1) * commentsPerPage >= comments.length">Siguiente →</button>
+  </div>
+
+  <!-- Agregar comentario -->
+  <div class="add-comment">
+    <textarea [(ngModel)]="newComment" placeholder="Escribe un comentario..."></textarea>
+
+    <!-- Selector de estrellas -->
+    <div class="star-rating">
+      <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+            (click)="selectRating(star)"
+            (mouseover)="hoverRating = star"
+            (mouseleave)="hoverRating = selectedRating"
+            [class.filled]="star <= hoverRating"
+            [class.selected]="star <= selectedRating">
+        ★
+      </span>
+    </div>
+
+
+    <button (click)="addComment()">Agregar comentario</button>
+  </div>
+</div>

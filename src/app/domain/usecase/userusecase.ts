@@ -18,4 +18,10 @@ export class UserUseCases {
     return this._userGateway.getUserById(userId);
   }
 
+  createUser(user: User): Observable<User> {
+    return this._userGateway.createUser(user);
+  }
+  // updateUser(user: User): Observable<User> {
+  //   return this._userGateway.updateUser(user);
+  // }
 }

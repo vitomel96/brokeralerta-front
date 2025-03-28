@@ -21,4 +21,8 @@ export class UserService extends UserGateway {
   getUserById(userId: string): Observable<User> {
     return this.genericService.get<User>(this._url, `users/${userId}`);
   }
+
+  createUser(user: User): Observable<User> {
+    return this.genericService.post<User>(this._url, "users", user);
+  }
 }

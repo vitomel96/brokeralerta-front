@@ -11,3 +11,7 @@
   background-color: var(--second-color)!important;
 }
 
+.btn.btn-primary{
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}

@@ -5,12 +5,11 @@ import { UserUseCases } from '../../../domain/usecase/userusecase';
 import { UserGateway } from '../../../domain/models/User/gateway/user-gateway';
 import { UserService } from '../../../infraestructure/driven-adapter/services/user/user.service';
 import { User } from '../../../domain/models/User/user';
-import { BrokerListComponent } from "../../shared/components/broker-list/broker-list.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [GenericFormModule, BrokerListComponent],
+  imports: [GenericFormModule],
     providers: [{ provide: UserGateway, useClass: UserService }],
 
   templateUrl: './home.component.html',
