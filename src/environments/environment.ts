@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  // backendURL: "http://localhost:4040"
-  backendURL: "https://softxlicense.com/brokeralerta"
+ backendURL: "http://localhost:4040/api",
+ roleId: "676118f9-ff9d-11ef-ad3f-ecf4bbe6ca8c"
+
+  // backendURL: "http://brokersalerta.com/api"
 };
 
 /*

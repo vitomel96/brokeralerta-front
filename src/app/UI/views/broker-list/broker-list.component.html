@@ -1,4 +1,4 @@
-<div *ngFor="let broker of brokers" class="broker-card row">
+<div *ngFor="let broker of brokers" class="broker-card row" (click)="goToBrokerDetail(broker)">
   <div class="broker-logo col-4">
     <img [src]="broker.logo" alt="Logo de {{ broker.localShortName }}" class="img-fluid" />
 

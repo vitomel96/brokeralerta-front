@@ -1,0 +1,49 @@
+<div class="container">
+  <h2>Gestión de Brokers</h2>
+
+  <button class="mb-4" mat-raised-button style="background-color: #60c86d; color: white" (click)="openDialog()">Agregar Broker</button>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- ID -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let broker">{{ broker.id }}</td>
+    </ng-container>
+
+    <!-- Nombre -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let broker">{{ broker.localShortName }}</td>
+    </ng-container>
+
+    <!-- País -->
+    <ng-container matColumnDef="country">
+      <th mat-header-cell *matHeaderCellDef>País</th>
+      <td mat-cell *matCellDef="let broker">{{ broker.registerCountry }}</td>
+    </ng-container>
+
+    <!-- Puntaje -->
+    <ng-container matColumnDef="score">
+      <th mat-header-cell *matHeaderCellDef>Puntaje</th>
+      <td mat-cell *matCellDef="let broker">{{ broker.score }}</td>
+    </ng-container>
+
+    <!-- Acciones -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let broker">
+        <button mat-icon-button color="accent" (click)="openDialog(broker)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteBroker(broker.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,0 +1,42 @@
+<div class="broker-container">
+  <div class="broker-header">
+    <div>
+    <img [src]="broker.logo" alt="Broker Logo" class="broker-logo" />
+    <div class="d-flex flex-column border-br">
+
+    <p>
+      <strong>Calificación</strong>
+    </p>
+    <span [style.color]="broker.color">{{ broker.score }}</span>
+
+    </div>
+    </div>
+  <div class="broker-info">
+    <h2>{{ broker.localShortName }}</h2>
+
+<p class="broker-labels"><img [src]="broker.flag" alt="Flag" class="flag-icon" /> {{ broker.registerCountry }} | {{broker.labels[0].labelName }} | Referencia {{broker.ratingText}} | {{broker.labels[1].labelName }} |</p>
+
+<div>
+<p class="broker-labels">
+  <span  *ngFor="let label of broker.labels.slice(2)">{{label.labelName}} |</span>
+</p>
+</div>
+<p><strong>Estado:</strong> {{ broker.annotation }}</p>
+  </div>
+  </div>
+
+
+
+
+  <div class="broker-websites">
+    <h3>Websites</h3>
+    <ul>
+      <li *ngFor="let website of broker.websites">
+        <a [href]="website.url" target="_blank">{{ website.url }}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div>
+<app-comment-box [brokerId]="broker.id"></app-comment-box>
+</div>

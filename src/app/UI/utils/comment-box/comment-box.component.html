@@ -1,0 +1,49 @@
+<div class="comment-box">
+  <h3>Comentarios</h3>
+
+  <!-- Lista de comentarios -->
+  <ul class="comment-list">
+    <li *ngFor="let comment of paginatedComments">
+      <p><strong>{{ comment.userId }}</strong></p>
+      <p>{{ comment.content }}</p>
+      <div class="star-rating">
+        <span *ngFor="let star of [1, 2, 3, 4, 5]"
+              [class.filled]="star <= comment.rating">★</span>
+      </div>
+    </li>
+  </ul>
+
+  <!-- Controles de paginación -->
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 0">← Anterior</button>
+    <span>Página {{ currentPage + 1 }}</span>
+    <button (click)="nextPage()" [disabled]="(currentPage + 1) * commentsPerPage >= comments.length">Siguiente →</button>
+  </div>
+
+  <!-- Agregar comentario -->
+ <!-- Agregar comentario -->
+<div class="add-comment">
+  <div *ngIf="!isLoggedIn" class="backdrop">
+    <p>Debes iniciar sesión para comentar.</p>
+  </div>
+
+  <div [class.disabled]="!isLoggedIn">
+    <textarea [(ngModel)]="newComment" placeholder="Escribe un comentario..." [disabled]="!isLoggedIn"></textarea>
+
+    <!-- Selector de estrellas -->
+    <div class="star-rating">
+      <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+            (click)="isLoggedIn ? selectRating(star) : null"
+            (mouseover)="isLoggedIn ? hoverRating = star : null"
+            (mouseleave)="isLoggedIn ? hoverRating = selectedRating : null"
+            [class.filled]="star <= hoverRating"
+            [class.selected]="star <= selectedRating">
+        ★
+      </span>
+    </div>
+
+    <button (click)="addComment()" [disabled]="!isLoggedIn">Agregar comentario</button>
+  </div>
+</div>
+
+</div>

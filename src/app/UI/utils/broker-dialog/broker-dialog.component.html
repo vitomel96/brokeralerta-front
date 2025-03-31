@@ -1,0 +1,161 @@
+<h3 class="mt-2 mx-2">{{ data ? 'Editar Broker' : 'Agregar Broker' }}</h3>
+
+<div mat-dialog-content>
+
+  <!-- Datos Generales -->
+  <h3>Datos Generales</h3>
+  <mat-divider></mat-divider>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>Código</mat-label>
+    <input matInput [(ngModel)]="broker.code">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>Nombre Corto (Local)</mat-label>
+    <input matInput [(ngModel)]="broker.localShortName">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>Nombre Completo (Local)</mat-label>
+    <input matInput [(ngModel)]="broker.localFullName">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>Nombre Corto (Inglés)</mat-label>
+    <input matInput [(ngModel)]="broker.englishShortName">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>Nombre Completo (Inglés)</mat-label>
+    <input matInput [(ngModel)]="broker.englishFullName">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>País de Registro</mat-label>
+    <input matInput [(ngModel)]="broker.registerCountry">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>Puntaje</mat-label>
+    <input
+      matInput
+      type="number"
+      [(ngModel)]="broker.score"
+      min="0"
+      max="10"
+      step="0.1"
+    >
+  </mat-form-field>
+
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>Anotación</mat-label>
+    <input matInput [(ngModel)]="broker.annotation">
+  </mat-form-field>
+
+  <mat-divider></mat-divider>
+
+  <!-- Sección de Visuales -->
+  <h3>Detalles Visuales</h3>
+  <mat-divider></mat-divider>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>Color Representativo</mat-label>
+    <input matInput type="color" [(ngModel)]="broker.color">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>URL del Logo</mat-label>
+    <input matInput [(ngModel)]="broker.logo">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>URL del Ícono</mat-label>
+    <input matInput [(ngModel)]="broker.ico">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>Bandera</mat-label>
+    <input matInput [(ngModel)]="broker.flag">
+  </mat-form-field>
+
+  <mat-divider></mat-divider>
+
+<!-- Sección de Estados -->
+<h3>Estados</h3>
+<mat-divider></mat-divider>
+
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 10px 0;">
+  <mat-slide-toggle [(ngModel)]="broker.isEpc">EPC</mat-slide-toggle>
+  <mat-slide-toggle [(ngModel)]="broker.isVr">VR</mat-slide-toggle>
+  <mat-slide-toggle [(ngModel)]="broker.offical">Oficial</mat-slide-toggle>
+</div>
+
+<mat-divider></mat-divider>
+
+
+
+<h3>Categorías</h3>
+<mat-divider></mat-divider>
+
+<div class="category-container">
+  <!-- Campo para escribir nueva categoría -->
+  <mat-form-field appearance="outline" class="category-input">
+    <mat-label>Nueva Categoría</mat-label>
+    <input matInput [(ngModel)]="newCategory" placeholder="Ej: Tecnología">
+  </mat-form-field>
+  <button mat-mini-fab color="primary" (click)="addCategory()">
+    <mat-icon>+</mat-icon>
+  </button>
+</div>
+
+<mat-chip-list>
+  <mat-chip *ngFor="let category of broker.categories; let i = index" selectable="true">
+    {{ category.name }}
+    <mat-icon (click)="removeCategory(i)" class="fs-4" style="color: red;font-weight: 800;cursor: pointer;">x</mat-icon>
+  </mat-chip>
+</mat-chip-list>
+
+<mat-divider></mat-divider>
+
+<!-- Websites -->
+<h3>Websites</h3>
+<mat-divider></mat-divider>
+
+<div *ngFor="let website of broker.websites; let i = index">
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>URL</mat-label>
+    <input matInput [(ngModel)]="website.url">
+  </mat-form-field>
+  <button mat-icon-button color="warn" (click)="removeWebsite(i)">
+    <mat-icon>X</mat-icon>
+  </button>
+</div>
+
+<button mat-button (click)="addWebsite()">Agregar Website</button>
+
+<mat-divider></mat-divider>
+
+<!-- Etiquetas -->
+<h3>Etiquetas</h3>
+<mat-divider></mat-divider>
+
+<div *ngFor="let label of broker.labels; let i = index">
+  <mat-form-field appearance="outline" fullWidth>
+    <mat-label>Etiqueta</mat-label>
+    <input matInput [(ngModel)]="label.labelName">
+  </mat-form-field>
+  <button mat-icon-button color="warn" (click)="removeLabel(i)">
+    <mat-icon>X</mat-icon>
+  </button>
+</div>
+
+<button mat-button (click)="addLabel()">Agregar Etiqueta</button>
+
+</div>
+<div mat-dialog-actions style="display: flex; justify-content: center; gap: 10px;">
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-button color="primary" (click)="save()">Guardar</button>
+</div>
+
