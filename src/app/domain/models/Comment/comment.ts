@@ -1,8 +1,8 @@
 
 export class Comment {
-  id!: number;
+  id?: string;
   brokerId!: number;
-  userId!: number;
+  userId!: string;
   content!: string;
   rating!: number;
 }

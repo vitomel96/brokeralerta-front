@@ -3,6 +3,7 @@ import { LoginModalComponent } from '../../../utils/login-modal/login-modal.comp
 import { AuthService } from '../../../../infraestructure/driven-adapter/services/auth/auth.service';
 import { RouterModule } from '@angular/router';
 import { NgIf } from '@angular/common';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -14,22 +15,25 @@ import { NgIf } from '@angular/common';
 export class HeaderComponent implements AfterViewInit {
   @ViewChild(LoginModalComponent) loginModal!: LoginModalComponent;
   isAuthenticated: boolean = false;
-  user: any = null; // Puede ser un objeto con más datos del usuario
-  showModal: boolean = false; // 👈 Asegurar que el modal está renderizado
+  adminId = environment.roleId;
+  user: any = null;
+  showModal: boolean = false;
 
   constructor(private authService: AuthService, private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
-    setTimeout(() => { // 👈 Esperar a que el modal esté en el DOM
+    setTimeout(() => {
       this.cdr.detectChanges();
-      console.log('✅ HeaderComponent: ViewChild loginModal inicializado', this.loginModal);
     });
   }
 
   ngOnInit() {
     this.isAuthenticated = this.authService.isAuthenticated();
     this.user = this.authService.getUser();
+    console.log(this.user)
+    if(this.user !== null){
     console.log('🟢 Estado de autenticación:', this.isAuthenticated, 'Usuario:', this.user);
+  }
   }
 
   openLogin() {

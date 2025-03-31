@@ -3,6 +3,7 @@ import { Comment } from '../../../domain/models/Comment/comment';
 import { CommentGateway } from '../../../domain/models/Comment/gateway/comment-gateway';
 import { NgFor } from '@angular/common';
 import { GenericFormModule } from '../../../infraestructure/helpers/generic-form-module/generic-form.module';
+import { AuthService } from '../../../infraestructure/driven-adapter/services/auth/auth.service';
 
 @Component({
   selector: 'app-comment-box',
@@ -22,15 +23,22 @@ export class CommentBoxComponent {
   content: string = '';
   selectedRating: number = 0;
   hoverRating: number = 0;
+  currentUser: any;
+  isLoggedIn: boolean = false;
 
-  constructor(private commentGateway: CommentGateway) {
+  constructor(private commentGateway: CommentGateway, private authService: AuthService) {
   }
 
   ngOnInit() {
+    this.isLoggedIn = this.authService.isAuthenticated();
+    if(this.isLoggedIn){
+      this.currentUser = this.authService.getUser();
+    }
     this.commentGateway.getBrokerComments(this.brokerId).subscribe(comments => {
       this.comments = comments;
     });
   }
+
   // Obtener los comentarios de la página actual
   get paginatedComments(): Comment[] {
     const start = this.currentPage * this.commentsPerPage;
@@ -58,10 +66,9 @@ export class CommentBoxComponent {
   addComment() {
     if (this.newComment.trim() && this.selectedRating > 0) {
       const newComment: Comment = {
-        id: 0, // El backend debería asignar el ID
         brokerId: this.brokerId,
         content: this.newComment,
-        userId: 1, // Esto debería venir del usuario autenticado
+        userId: this.currentUser.id,
         rating: this.selectedRating,
       };
 

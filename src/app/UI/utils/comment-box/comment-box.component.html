@@ -21,22 +21,29 @@
   </div>
 
   <!-- Agregar comentario -->
-  <div class="add-comment">
-    <textarea [(ngModel)]="newComment" placeholder="Escribe un comentario..."></textarea>
+ <!-- Agregar comentario -->
+<div class="add-comment">
+  <div *ngIf="!isLoggedIn" class="backdrop">
+    <p>Debes iniciar sesión para comentar.</p>
+  </div>
+
+  <div [class.disabled]="!isLoggedIn">
+    <textarea [(ngModel)]="newComment" placeholder="Escribe un comentario..." [disabled]="!isLoggedIn"></textarea>
 
     <!-- Selector de estrellas -->
     <div class="star-rating">
       <span *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
-            (click)="selectRating(star)"
-            (mouseover)="hoverRating = star"
-            (mouseleave)="hoverRating = selectedRating"
+            (click)="isLoggedIn ? selectRating(star) : null"
+            (mouseover)="isLoggedIn ? hoverRating = star : null"
+            (mouseleave)="isLoggedIn ? hoverRating = selectedRating : null"
             [class.filled]="star <= hoverRating"
             [class.selected]="star <= selectedRating">
         ★
       </span>
     </div>
 
-
-    <button (click)="addComment()">Agregar comentario</button>
+    <button (click)="addComment()" [disabled]="!isLoggedIn">Agregar comentario</button>
   </div>
+</div>
+
 </div>

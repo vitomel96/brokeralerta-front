@@ -15,4 +15,10 @@ export class Broker {
   labels: any;
   websites: any;
   category: any;
+ico: any;
+ratingText: any;
+isEpc: any;
+isVr: any;
+offical: any;
+categories: any;
 }

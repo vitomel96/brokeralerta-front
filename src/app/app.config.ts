@@ -9,6 +9,7 @@ import { BrokerGateway } from './domain/models/Broker/gateway/broker-gateway';
 import { BrokerService } from './infraestructure/driven-adapter/services/broker/broker.service';
 import { CommentGateway } from './domain/models/Comment/gateway/comment-gateway';
 import { CommentService } from './infraestructure/driven-adapter/services/comment/comment.service';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
    { provide: UserGateway, useClass: UserService },
    { provide: BrokerGateway, useClass: BrokerService },
-   { provide : CommentGateway, useClass: CommentService }
+   { provide : CommentGateway, useClass: CommentService }, provideAnimationsAsync()
 
   ]
 };

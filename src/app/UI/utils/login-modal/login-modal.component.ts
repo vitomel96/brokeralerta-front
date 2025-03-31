@@ -3,7 +3,7 @@ import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModu
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../infraestructure/driven-adapter/services/auth/auth.service';
 import { UserGateway } from '../../../domain/models/User/gateway/user-gateway';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login-modal',
   standalone: true,
@@ -50,13 +50,7 @@ export class LoginModalComponent {
 
     const { email, password } = this.loginForm.value;
     if (email && password) {
-      this.authService.login({ email, password }).subscribe((response) => {
-        if (response.token) {
-          this.close();
-        } else {
-          alert('Credenciales incorrectas');
-        }
-      });
+      this.authService.login({ email, password });
     }
   }
 
@@ -74,6 +68,14 @@ export class LoginModalComponent {
 
     this.userGateway.createUser({ name, email, password, lastName }).subscribe((response) => {
       if (response.id) {
+        Swal.fire({
+          title: "",
+          icon: "success",
+          confirmButtonText: 'Continuar'
+        }).then((result) =>{
+          this.isRegister === false;
+          this.authService.login({ email: response.email, password: response.password })
+        });
         this.close();
       } else {
         alert('Error al registrar el usuario');

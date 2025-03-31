@@ -18,15 +18,7 @@
           <li class="nav-item">
             <a routerLink="/brokers" class="nav-link" routerLinkActive="active">Brokers</a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link disabled" aria-disabled="true">Mercado</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link disabled" aria-disabled="true">FAQs</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link disabled" aria-disabled="true">Contacto</a>
-          </li>
+
 
           <!-- Si el usuario no está autenticado -->
           <li *ngIf="!isAuthenticated" class="nav-item">
@@ -34,12 +26,12 @@
           </li>
 
           <!-- Si el usuario está autenticado -->
-          <li *ngIf="isAuthenticated" class="nav-item dropdown">
+          <li *ngIf="isAuthenticated" class="nav-item dropdown user">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{ user?.name }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a routerLink="/profile" class="dropdown-item">Mi perfil</a></li>
+              <li *ngIf="user?.roleId === adminId"><a routerLink="/brokers-admin" class="dropdown-item">Gestión de brokers</a></li>
               <li><button class="dropdown-item" (click)="logout()">Cerrar sesión</button></li>
             </ul>
           </li>

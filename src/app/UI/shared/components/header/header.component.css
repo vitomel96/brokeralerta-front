@@ -6,3 +6,8 @@
   background-position: center;
   display: block;
 }
+
+.nav-item.user{
+  background-color: #141414;
+  border-radius: 5px;
+}

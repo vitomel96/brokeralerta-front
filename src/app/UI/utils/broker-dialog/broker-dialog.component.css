@@ -1,0 +1,15 @@
+.mat-mdc-input-element{
+  padding: 1rem 2rem;
+  margin-top: 0.5rem;
+}
+.mat-mdc-form-field{
+  margin: 0 1rem;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control.mdc-text-field__input[type=color]{
+  height: 50px!important;
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch:enabled+.mdc-label{
+  color: black;
+}
