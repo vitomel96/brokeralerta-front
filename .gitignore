@@ -26,6 +26,7 @@ yarn-error.log
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+firebase-debug.log
 
 # Miscellaneous
 /.angular/cache

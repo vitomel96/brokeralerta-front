@@ -4,6 +4,7 @@ import { CommentGateway } from '../../../domain/models/Comment/gateway/comment-g
 import { NgFor } from '@angular/common';
 import { GenericFormModule } from '../../../infraestructure/helpers/generic-form-module/generic-form.module';
 import { AuthService } from '../../../infraestructure/driven-adapter/services/auth/auth.service';
+import { LoginModalService } from '../../../infraestructure/driven-adapter/services/login-modal/login-modal.service';
 
 @Component({
   selector: 'app-comment-box',
@@ -26,7 +27,7 @@ export class CommentBoxComponent {
   currentUser: any;
   isLoggedIn: boolean = false;
 
-  constructor(private commentGateway: CommentGateway, private authService: AuthService) {
+  constructor(private commentGateway: CommentGateway, private authService: AuthService, private loginModalService: LoginModalService) {
   }
 
   ngOnInit() {
@@ -39,7 +40,11 @@ export class CommentBoxComponent {
     });
   }
 
-  // Obtener los comentarios de la página actual
+  openLogin(){
+    console.log('open')
+    this.loginModalService.open();
+  }
+
   get paginatedComments(): Comment[] {
     const start = this.currentPage * this.commentsPerPage;
     return this.comments.slice(start, start + this.commentsPerPage);
@@ -50,7 +55,6 @@ export class CommentBoxComponent {
     this.hoverRating = star;
   }
 
-  // Navegar entre páginas
   nextPage() {
     if ((this.currentPage + 1) * this.commentsPerPage < this.comments.length) {
       this.currentPage++;
@@ -72,10 +76,9 @@ export class CommentBoxComponent {
         rating: this.selectedRating,
       };
 
-      // Enviar al backend
       this.commentGateway.addComment(newComment).subscribe({
         next: (savedComment) => {
-          this.comments.unshift(savedComment); // Agregar el comentario con el ID del backend
+          this.comments.unshift(savedComment);
           this.resetForm();
         },
         error: (err) => console.error("Error al enviar comentario:", err),
@@ -83,7 +86,6 @@ export class CommentBoxComponent {
     }
   }
 
-  // Resetear el formulario después de agregar un comentario
   private resetForm() {
     this.newComment = '';
     this.selectedRating = 0;

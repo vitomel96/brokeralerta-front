@@ -1,4 +1,13 @@
-<div *ngFor="let broker of brokers" class="broker-card row" (click)="goToBrokerDetail(broker)">
+<div class="d-flex gap-3 my-3">
+  <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar broker..." class="form-control" />
+
+  <select [(ngModel)]="selectedCountry" class="form-select">
+    <option value="">Todos los países</option>
+    <option *ngFor="let country of countryList" [value]="country">{{ country }}</option>
+  </select>
+</div>
+
+<div *ngFor="let broker of paginatedBrokers()" class="broker-card row" (click)="goToBrokerDetail(broker)">
   <div class="broker-logo col-4">
     <img [src]="broker.logo" alt="Logo de {{ broker.localShortName }}" class="img-fluid" />
 
@@ -39,4 +48,9 @@
 
 </div>
 
+</div>
+<div class="d-flex justify-content-center mt-4 gap-3">
+  <button class="btn btn-light" (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+  <span class="d-flex align-items-center">Página {{ currentPage }} de {{ totalPages }}</span>
+  <button class="btn btn-dark" (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
 </div>

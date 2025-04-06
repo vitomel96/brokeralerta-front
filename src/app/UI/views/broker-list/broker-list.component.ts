@@ -3,16 +3,23 @@ import { Component } from '@angular/core';
 import { Broker } from '../../../domain/models/Broker/broker';
 import { BrokerGateway } from '../../../domain/models/Broker/gateway/broker-gateway';
 import { Router } from '@angular/router';
+import { GenericFormModule } from '../../../infraestructure/helpers/generic-form-module/generic-form.module';
 
 @Component({
   selector: 'app-broker-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,GenericFormModule ],
   templateUrl: './broker-list.component.html',
   styleUrl: './broker-list.component.css'
 })
 export class BrokerListComponent {
   brokers: Broker[] = [];
+  searchTerm: string = '';
+  selectedCountry: string = '';
+  countryList: string[] = [];
+
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
 
   constructor(private brokerGateway: BrokerGateway, private router: Router) {}
 
@@ -20,11 +27,45 @@ export class BrokerListComponent {
     this.router.navigate(['/brokers', broker.localShortName]); // Navega al detalle
   }
 
+  get filteredBrokers(): Broker[] {
+    return this.brokers.filter(broker => {
+      const matchSearch = this.searchTerm
+        ? broker.localShortName.toLowerCase().includes(this.searchTerm.toLowerCase())
+        : true;
+
+      const matchCountry = this.selectedCountry
+        ? broker.registerCountry === this.selectedCountry
+        : true;
+
+      return matchSearch && matchCountry;
+    });
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredBrokers.length / this.itemsPerPage);
+  }
+
+  paginatedBrokers(): Broker[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.filteredBrokers.slice(start, end);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
   ngOnInit(): void {
     this.brokerGateway.getAllBrokers().subscribe(brokers => {
       this.brokers = brokers.map(broker => {
-        // Asigna la bandera a cada etiqueta del broker
-        broker.labels = broker.labels.map((label: { labelName: string | string[]; }) => {
+        broker.labels = broker.labels.map((label: { labelName: string | string[] }) => {
           for (const country in this.countryFlags) {
             if (label.labelName.includes(country)) {
               return { ...label, flag: this.countryFlags[country] };
@@ -34,8 +75,11 @@ export class BrokerListComponent {
         });
         return broker;
       });
+
+      this.countryList = Array.from(new Set(this.brokers.map(b => b.registerCountry))).sort();
     });
   }
+
 
   countryFlags: Record<string, string> = {
     "Australia": "https://flagcdn.com/w320/au.png",

@@ -20,18 +20,17 @@
           </li>
 
 
-          <!-- Si el usuario no está autenticado -->
           <li *ngIf="!isAuthenticated" class="nav-item">
             <button class="btn btn-primary text-white" (click)="openLogin()">Iniciar sesión</button>
           </li>
 
-          <!-- Si el usuario está autenticado -->
           <li *ngIf="isAuthenticated" class="nav-item dropdown user">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{ user?.name }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li *ngIf="user?.roleId === adminId"><a routerLink="/brokers-admin" class="dropdown-item">Gestión de brokers</a></li>
+              <li *ngIf="user?.roleId === adminId"><a routerLink="/users-admin" class="dropdown-item">Gestión de usuarios</a></li>
               <li><button class="dropdown-item" (click)="logout()">Cerrar sesión</button></li>
             </ul>
           </li>
@@ -40,5 +39,5 @@
     </div>
   </nav>
 </div>
-<app-login-modal [class.d-none]="!showModal" (closeEvent)="closeLogin()"></app-login-modal>
+<app-login-modal (closeEvent)="closeLogin()"></app-login-modal>
 

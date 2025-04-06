@@ -4,6 +4,7 @@ import { AuthService } from '../../../../infraestructure/driven-adapter/services
 import { RouterModule } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
+import { LoginModalService } from '../../../../infraestructure/driven-adapter/services/login-modal/login-modal.service';
 
 @Component({
   selector: 'app-header',
@@ -13,13 +14,12 @@ import { environment } from '../../../../../environments/environment';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements AfterViewInit {
-  @ViewChild(LoginModalComponent) loginModal!: LoginModalComponent;
   isAuthenticated: boolean = false;
   adminId = environment.roleId;
   user: any = null;
   showModal: boolean = false;
 
-  constructor(private authService: AuthService, private cdr: ChangeDetectorRef) {}
+  constructor(private authService: AuthService, private cdr: ChangeDetectorRef, private loginModalService: LoginModalService) {}
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -37,9 +37,11 @@ export class HeaderComponent implements AfterViewInit {
   }
 
   openLogin() {
+    this.loginModalService.open();
     this.showModal = true;
   }
   closeLogin() {
+    this.loginModalService.close();
     this.showModal = false;
   }
 

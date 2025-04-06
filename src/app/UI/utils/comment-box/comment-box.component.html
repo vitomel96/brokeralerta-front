@@ -23,8 +23,8 @@
   <!-- Agregar comentario -->
  <!-- Agregar comentario -->
 <div class="add-comment">
-  <div *ngIf="!isLoggedIn" class="backdrop">
-    <p>Debes iniciar sesión para comentar.</p>
+  <div *ngIf="!isLoggedIn" class="backdrop" >
+    <p (click)="openLogin()">Debes iniciar sesión para comentar.</p>
   </div>
 
   <div [class.disabled]="!isLoggedIn">

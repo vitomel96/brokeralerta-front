@@ -1,9 +1,11 @@
-import { Component, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../infraestructure/driven-adapter/services/auth/auth.service';
 import { UserGateway } from '../../../domain/models/User/gateway/user-gateway';
 import Swal from 'sweetalert2';
+import { LoginModalService } from '../../../infraestructure/driven-adapter/services/login-modal/login-modal.service';
+
 @Component({
   selector: 'app-login-modal',
   standalone: true,
@@ -11,14 +13,24 @@ import Swal from 'sweetalert2';
   templateUrl: './login-modal.component.html',
   styleUrls: ['./login-modal.component.css']
 })
-export class LoginModalComponent {
+export class LoginModalComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<void>();
-  @ViewChild('modalBackdrop') modalBackdrop!: ElementRef; // Para cerrar al hacer clic afuera
+  @ViewChild('modalBackdrop') modalBackdrop!: ElementRef;
 
-  constructor(private authService: AuthService, private userGateway: UserGateway) {}
+  constructor(
+    private authService: AuthService,
+    private userGateway: UserGateway,
+    public loginModalService: LoginModalService
+  ) {}
 
   isRegister = false;
-  isModalOpen = false; // Estado del modal
+  isModalOpen = false;
+
+  ngOnInit(): void {
+    this.loginModalService.isOpen$.subscribe((isOpen) => {
+      this.isModalOpen = isOpen;
+    });
+  }
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -38,6 +50,7 @@ export class LoginModalComponent {
   }
 
   close() {
+    this.isModalOpen = false;
     this.closeEvent.emit();
   }
 
@@ -68,13 +81,8 @@ export class LoginModalComponent {
 
     this.userGateway.createUser({ name, email, password, lastName }).subscribe((response) => {
       if (response.id) {
-        Swal.fire({
-          title: "",
-          icon: "success",
-          confirmButtonText: 'Continuar'
-        }).then((result) =>{
-          this.isRegister === false;
-          this.authService.login({ email: response.email, password: response.password })
+        Swal.fire({ title: "", icon: "success", confirmButtonText: 'Continuar' }).then(() => {
+          this.authService.login({ email: response.email, password: response.password });
         });
         this.close();
       } else {
@@ -89,4 +97,3 @@ export class LoginModalComponent {
     }
   }
 }
-
