@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService extends UserGateway {
+
   private _url = environment.backendURL;
 
   constructor(private genericService: GenericService) {
@@ -24,5 +25,13 @@ export class UserService extends UserGateway {
 
   createUser(user: User): Observable<User> {
     return this.genericService.post<User>(this._url, "users", user);
+  }
+
+   deleteUser(id: string): Observable<User> {
+    return this.genericService.delete<User>(this._url,`users/${id}` );
+  }
+
+   updateUser(user: User, id: String): Observable<User> {
+    return this.genericService.post<User>(this._url,`users/update/${id}`, user);
   }
 }

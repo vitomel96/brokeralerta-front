@@ -1,9 +1,10 @@
-<div class="modal fade show d-flex justify-content-center align-items-center" tabindex="-1">
+<!-- Modal -->
+<div *ngIf="isModalOpen" class="modal fade show d-flex justify-content-center align-items-center" tabindex="-1">
   <div class="modal-dialog w-100">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title text-center">{{ isRegister ? 'Registrarse' : 'Iniciar sesión' }}</h5>
-        <button type="button" class="btn-close" (click)="close()"></button>
+        <button type="button" class="btn-close" (click)="loginModalService.close()"></button>
       </div>
 
       <div class="modal-body">
@@ -55,5 +56,9 @@
   </div>
 </div>
 
-<!-- Fondo oscuro -->
-<div  #modalBackdrop class="modal-backdrop fade show" (click)="closeOnBackdropClick($event)"></div>
+<!-- Fondo oscuro (backdrop) -->
+<div *ngIf="isModalOpen"
+     #modalBackdrop
+     class="modal-backdrop fade show"
+     (click)="closeOnBackdropClick($event)">
+</div>
