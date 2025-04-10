@@ -1,7 +1,14 @@
 <div class="container">
-  <h2>Gestión de Brokers</h2>
+  <h2>
+    {{ isScam ? 'Gestión de Scams' : 'Gestión de Brokers' }}</h2>
 
-  <button class="mb-4" mat-raised-button style="background-color: #60c86d; color: white" (click)="openDialog()">Agregar Broker</button>
+  <button
+  class="mb-4"
+  mat-raised-button
+  style="background-color: #60c86d; color: white"
+  (click)="openDialog()">
+  {{ isScam ? 'Agregar Scam' : 'Agregar Broker' }}
+</button>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- ID -->

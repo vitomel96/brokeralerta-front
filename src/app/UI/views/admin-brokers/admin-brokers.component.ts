@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Broker } from '../../../domain/models/Broker/broker';
 import { BrokerGateway } from '../../../domain/models/Broker/gateway/broker-gateway';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,36 +13,50 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrokerDialogComponent } from '../../utils/broker-dialog/broker-dialog.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-brokers',
   standalone: true,
   imports: [
     CommonModule, MatTableModule, MatButtonModule, MatIconModule,
-    MatDialogModule, MatSnackBarModule, MatPaginatorModule
+    MatDialogModule, MatSnackBarModule, MatPaginatorModule,
+    MatSlideToggleModule
   ],
   templateUrl: './admin-brokers.component.html',
-  styleUrl: './admin-brokers.component.css'
+  styleUrl: './admin-brokers.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AdminBrokersComponent implements AfterViewInit {
   displayedColumns: string[] = ['id', 'name', 'country', 'score', 'actions'];
   dataSource = new MatTableDataSource<Broker>([]);
-
+  isScam: boolean = false;
   snackBar = inject(MatSnackBar);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private brokerGateway: BrokerGateway, private dialog: MatDialog) {}
+  constructor( private router: Router,private brokerGateway: BrokerGateway, private dialog: MatDialog) {}
 
   ngOnInit(): void {
+    if (this.router.url.includes('/scams-admin')) {
+      this.isScam = true;
+    } else {
+      this.isScam = false;
+    }
+
     this.loadBrokers();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
+  onToggleScams(event: any): void {
+    this.isScam = event.checked;
+      this.loadBrokers();
+  }
 
   loadBrokers(): void {
-    this.brokerGateway.getAllBrokers().subscribe({
+    this.brokerGateway.getAllBrokers(this.isScam).subscribe({
       next: (data: Broker[]) => {
         this.dataSource.data = data.sort((a, b) => a.id - b.id);
         this.dataSource.paginator = this.paginator;
@@ -58,13 +72,16 @@ export class AdminBrokersComponent implements AfterViewInit {
     });
   }
 
-  openDialog(broker?: Broker) {
+  openDialog(broker?: Broker): void {
     const dialogRef = this.dialog.open(BrokerDialogComponent, {
       width: '800px',
-      data: broker ? { ...broker } : null
+      data: {
+        broker: broker ? { ...broker } : null,
+        isScam: this.isScam,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         broker ? this.updateBroker(result) : this.createBroker(result);
       }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Broker } from '../../../domain/models/Broker/broker';
@@ -27,13 +27,16 @@ export class BrokerDetailComponent implements OnInit {
 
   ngOnInit(): void {
     const brokerName = this.route.snapshot.paramMap.get('name');
+    const isScamParam = this.route.snapshot.queryParamMap.get('scam');
+    const isScam = isScamParam === 'true';
+
     if (brokerName) {
-      this.brokerGateway.getAllBrokers().subscribe(brokers => {
+      this.brokerGateway.getAllBrokers(isScam).subscribe(brokers => {
         this.broker = brokers.find(b => b.localShortName === brokerName);
-        console.log(this.broker)
       });
     }
   }
+
   goBack(): void {
     this.location.back();
   }

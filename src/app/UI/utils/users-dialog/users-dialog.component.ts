@@ -36,7 +36,8 @@ export class UserDialogComponent {
       lastName: [data?.lastName || '', Validators.required],
       email: [data?.email || '', [Validators.required, Validators.email]],
       password: ['', data ? [] : [Validators.required, Validators.minLength(6)]], // solo en creación
-      role: [data?.role]
+      role: [data?.role],
+      phoneNumber: [data?.phoneNumber || ''],
     });
   }
 

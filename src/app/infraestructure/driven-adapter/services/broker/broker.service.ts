@@ -15,8 +15,8 @@ export class BrokerService extends BrokerGateway{
   constructor(private genericService: GenericService) {
     super();
   }
-  getAllBrokers(): Observable<Broker[]> {
-    return this.genericService.get<Broker>(this._url, "brokers").pipe(
+  getAllBrokers(boolean: boolean): Observable<Broker[]> {
+    return this.genericService.get<Broker>(this._url, `brokers/get/${boolean}`).pipe(
       map((brokers: any[]) => brokers.sort((a: { score: number; }, b: { score: number; }) => b.score - a.score))
     );
   }

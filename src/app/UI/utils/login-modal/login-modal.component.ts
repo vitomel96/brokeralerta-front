@@ -43,6 +43,7 @@ export class LoginModalComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
+    phoneNumber: new FormControl('')
   });
 
   open() {
@@ -74,15 +75,16 @@ export class LoginModalComponent implements OnInit {
     const email = this.registerForm.value.email!;
     const password = this.registerForm.value.password!;
     const confirmPassword = this.registerForm.value.confirmPassword!;
+    const phoneNumber = this.registerForm.value.phoneNumber!;
     if (password !== confirmPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
 
-    this.userGateway.createUser({ name, email, password, lastName }).subscribe((response) => {
+    this.userGateway.createUser({ name, email, password, lastName, phoneNumber }).subscribe((response) => {
       if (response.id) {
         Swal.fire({ title: "", icon: "success", confirmButtonText: 'Continuar' }).then(() => {
-          this.authService.login({ email: response.email, password: response.password });
+          this.authService.login({ email: response.email, password: password });
         });
         this.close();
       } else {

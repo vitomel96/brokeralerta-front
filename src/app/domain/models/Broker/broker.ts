@@ -21,4 +21,5 @@ isEpc: any;
 isVr: any;
 offical: any;
 categories: any;
+scam?: boolean
 }

@@ -3,6 +3,9 @@ export class User {
   name!: string;
   lastName!: string;
   email!: string;
+  phoneNumber!: string;
   password!: string;
   role?: any;
+  roleId?: string;
+
 }

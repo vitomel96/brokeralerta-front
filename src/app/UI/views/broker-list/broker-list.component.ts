@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Broker } from '../../../domain/models/Broker/broker';
 import { BrokerGateway } from '../../../domain/models/Broker/gateway/broker-gateway';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GenericFormModule } from '../../../infraestructure/helpers/generic-form-module/generic-form.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-broker-list',
   standalone: true,
-  imports: [CommonModule,GenericFormModule ],
+  imports: [CommonModule,GenericFormModule, MatSlideToggleModule ],
   templateUrl: './broker-list.component.html',
   styleUrl: './broker-list.component.css'
 })
@@ -20,12 +21,16 @@ export class BrokerListComponent {
 
   currentPage: number = 1;
   itemsPerPage: number = 5;
+  isScam: Boolean = false;
 
-  constructor(private brokerGateway: BrokerGateway, private router: Router) {}
+  constructor(private route: ActivatedRoute,private brokerGateway: BrokerGateway, private router: Router) {}
 
   goToBrokerDetail(broker: any) {
-    this.router.navigate(['/brokers', broker.localShortName]); // Navega al detalle
+    this.router.navigate(['/brokers', broker.localShortName], {
+      queryParams: { scam: broker.scam }
+    });
   }
+
 
   get filteredBrokers(): Broker[] {
     return this.brokers.filter(broker => {
@@ -63,7 +68,14 @@ export class BrokerListComponent {
     }
   }
   ngOnInit(): void {
-    this.brokerGateway.getAllBrokers().subscribe(brokers => {
+    if (this.router.url.includes('/scams')) {
+      this.isScam = true;
+    } else {
+      this.isScam = false;
+    }
+
+
+    this.brokerGateway.getAllBrokers(this.isScam).subscribe(brokers => {
       this.brokers = brokers.map(broker => {
         broker.labels = broker.labels.map((label: { labelName: string | string[] }) => {
           for (const country in this.countryFlags) {

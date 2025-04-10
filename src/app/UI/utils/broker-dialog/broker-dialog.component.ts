@@ -47,18 +47,21 @@ export class BrokerDialogComponent {
     isEpc: undefined,
     isVr: undefined,
     offical: undefined,
-    categories: undefined
+    categories: undefined,
+    scam: false
   };
 
   constructor(
     public dialogRef: MatDialogRef<BrokerDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
-    if (data) {
-      this.broker = { ...data };
+    if (data?.broker) {
+      this.broker = { ...data.broker };
     }
+
+    this.broker.scam = data?.isScam ?? false;
   }
+
   ngOnInit(): void {
     if (!this.broker) {
       this.broker = {
@@ -82,9 +85,10 @@ export class BrokerDialogComponent {
         websites: [],
         labels: [],
         category: undefined,
-        ratingText: undefined
+        ratingText: undefined,
+        scam: this.data?.isScam ?? false
       };
-      this.broker.categories = this.broker.categories || []; // 🔹 Si es undefined, lo inicializa como []
+      this.broker.categories = this.broker.categories || [];
       this.broker.websites = this.broker.websites || [];
       this.broker.labels = this.broker.labels || [];
     }
